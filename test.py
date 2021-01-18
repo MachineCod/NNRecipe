@@ -45,3 +45,6 @@ print(l2.weights)
 print(l2.bias)
 # print(l2(l1(np.array([[5,5]]))))
 
+#TODO weights transpose update
+#TODO flush layer.a.k.f.ao.ko.fo
+#TODO true values not only correct dimensions

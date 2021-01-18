@@ -1,34 +1,28 @@
-from src.opt.GD import GD
+from src.opt.Rms_Nesterov import GDNestrov
 import numpy as np
 
 
-class  ADAM(GD):
-    def __init__(self, learning_rate,beta1=.5,beta2=0.95):
-        super(ADAM, self).__init__(learning_rate)
-        pass
-         # self.__learning_rate = learning_rate
-       	 # self.__beta2 = beta2
-       	  # self.__beta1 = beta1
+class  GDAdam(GDNestrov):
+    def __init__(self, iteration_no, *args, **kwargs ):
+        super(GDAdam, self).__init__(*args, **kwargs)
+        self.__iteration_no = iteration_no
 
-    def optimize(self, layer, global_grad: np.ndarray) -> None:
-         """
-				from layer : 
-		    layer.S : S(new) = beta2*s(old)+(1-beta2)*grad^2
-			where beta is averaging /forgetting factor 
-			S , global_grade and layer.weights ve same width
-			
-			from layer : 
-		    layer.V : V(new) = beta1*V(old)+(1-beta1)*grad
-			represents adapting momentum with no bias correction 
-			v , global_grade and layer.weights ve same width
+    def optimize(self, layer, delta: np.ndarray) -> None:
+        if not hasattr(layer, "a"):
+            layer.a = np.zeros_like(layer.weights)
+            layer.ao = np.zeros_like(layer.bias)
 
-			should be used with mini-batch training
-				
-        """
-     	layer.V = self.__beta1* layer.V +(1-self.__beta1)* global_grad
-        layer.S = self.__beta2* layer.S +(1-self.__beta2)* np.square(global_grad)
-     
-       
-        learning_vect=self.__learning_rate * np.multiply(np.power(layer.S,-0.5), layer.V)
+        if not hasattr(layer, "f"):
+            layer.f = np.zeros_like(layer.weights)
+            layer.fo = np.zeros_like(layer.bias)
 
-        layer.weights = layer.weights - np.multiply( learning_vect, global_grad)
+        layer.a = self._roh * layer.a + (1 - self._roh) * np.square(np.dot(delta, layer.local_grad["dW"]))
+        layer.ao = self._roh * layer.ao + (1 - self._roh) * np.square(np.sum(delta) / delta.shape[1])
+
+        layer.f = self._roh * layer.a + (1 - self._beta) * np.dot(delta, layer.local_grad["dW"])
+        layer.fo = self._roh * layer.ao + (1 - self._beta) * (np.sum(delta) / delta.shape[1])
+
+        self._learning_rate = self._learning_rate * np.power(1 - np.power(self._roh,self.__iteration_no), 0.5) / (1 - np.power(self._beta, self.__iteration_no))
+
+        layer.weights = layer.weights - self._learning_rate / np.power(layer.a, 0.5) * layer.f
+        layer.bias = layer.bias - self._learning_rate / np.power(layer.ao, 0.5) * layer.fo

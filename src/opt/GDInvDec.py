@@ -1,4 +1,4 @@
-from src.opt.GDGDExpDec import GDExpDec
+from src.opt.GDExpDec import GDExpDec
 import numpy as np
 
 

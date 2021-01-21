@@ -1,8 +1,8 @@
-from src.opt.Rms_Nesterov import GDNestrov
+from src.opt.Rms_Nesterov import GDRmsNestrov
 import numpy as np
 
 
-class  GDAdam(GDNestrov):
+class  GDAdam(GDRmsNestrov):
     def __init__(self, iteration_no, *args, **kwargs ):
         super(GDAdam, self).__init__(*args, **kwargs)
         self.__iteration_no = iteration_no

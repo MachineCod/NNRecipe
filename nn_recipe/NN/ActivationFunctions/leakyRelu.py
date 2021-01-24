@@ -1,6 +1,7 @@
 from .__activation import ActivationFunction
 import numpy as np
 
+
 class LeakyReLU(ActivationFunction):
     """
     Class represents the leaky relu activation function

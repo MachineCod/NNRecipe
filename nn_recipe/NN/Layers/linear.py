@@ -19,10 +19,17 @@ class Linear(Layer):
         1. dW: ∂Y/∂Z * ∂Z/∂W = activation gradient * X
         2. dX: ∂Y/∂Z * ∂Z/∂X = activation gradient * W
         3. dB: ∂Y/∂Z * ∂Z/∂B = activation gradient * 1
+
+    :cvar ID: unique id for the activation function used by the layer loader
     """
 
     @staticmethod
     def load(data):
+        """
+        This function is used to create a new layer based on the descriptor
+
+        :rtype: Linear
+        """
         act = ActivationFunctionFactory(data.pop("activation"))
         return Linear(in_dim=data.pop("in_dim"), out_dim=data.pop("out_dim"), activation=act, **data)
 
@@ -48,21 +55,13 @@ class Linear(Layer):
         self.__activation = activation
         super(Linear, self).__init__(in_dim, out_dim, **kwargs)
 
-    
     def _init_params(self):
         """
         Initializes layer parameters (weights and bias)
-
-        Many different initialize schemes could be used:        # TODO add different init_factors that can be used (mar)
-            -
-            -
-            -
-
         """
         # factor = np.tanh(1/self._in_dim) # factor that will be used to normalize params
-        factor = np.sqrt(1/self._in_dim)
-        self._weights = np.random.normal(0, factor, (self._out_dim, self._in_dim))   # init weights
-        # TODO make initializing bias and weights with a pre defined values a feature
+        factor = np.sqrt(1 / self._in_dim)
+        self._weights = np.random.normal(0, factor, (self._out_dim, self._in_dim))  # init weights
         self._bias = np.random.normal(0, factor, (self._out_dim, 1))
         # self._bias = np.ones((self._out_dim, self.__batch_size)) # init bias
 
@@ -74,7 +73,6 @@ class Linear(Layer):
         :rtype: np.ndarray
         """
         return self.__activation(np.dot(self._weights, x.T) + self._bias).T
-
 
     def _calc_local_grad(self, x):
         """
@@ -97,6 +95,17 @@ class Linear(Layer):
         }
 
     def _save(self):
+        """
+         Methode used to get the data that will be saved in the save phase
+
+         Expected Descriptor Structure:
+            - ID: unique id for each layer (0 in case of Linear Layer)
+            - in_dim: number of inputs (number of neurons in the previous layer)
+            - iut_dim: number of neurons in the current layer
+            - activation: Activation function descriptor
+            - bias: numpy array represents the bias used by the layer
+            - weights: numpy array represents the weights used by the layer
+        """
         return {
             "in_dim": self._in_dim,
             "out_dim": self._out_dim,

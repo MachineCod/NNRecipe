@@ -34,7 +34,7 @@ class ReLU(ActivationFunction):
         - Backward pass of the relu function
         - ∇ relu(x) = max(0, x)
         - visit https://en.wikipedia.org/wiki/Sigmoid_functionhttps://en.wikipedia.org/wiki/Rectifier_(neural_networks)
-        to get more info about sigmoid
+        to get more info about relu
         :param x: input that is wanted to calculate the relu at
         :return: relu gradient at input x
         :rtype: np.ndarray

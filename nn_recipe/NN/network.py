@@ -28,7 +28,7 @@ class Network:
     ...     ],
     ...     optimizer=GD(learning_rate=0.5),
     ... )
-    >>> net.train()
+    >>> net.train(X, Y)
     >>> net.__feed_forward([1, 0.1, 0.5, 1.1])
     >>> net._save()
 
@@ -140,8 +140,10 @@ class Network:
         :type epsilon: int
         :param max_itr: maximum number of iteration to be executed
         :type max_itr: int
-        :notify_func: callback function used to report loss after training an epoch
+        :param notify_func: callback function used to report loss after training an epoch
         :type notify_func: Function[int]
+        :param verify_func: function hook used to get the accurecy of the validation data set
+        :type verify_func: Function
         :return: loss value and number of iterations executed
         :rtype: Tuple[int, int]
         """
@@ -232,6 +234,13 @@ class Network:
         return input_val
 
     def evaluate(self, X):
+        """
+        Function used to get the classified class of an input X
+
+        :param X: input feature
+        :type X: np.ndarray
+        :rtype: np.ndarrauy
+        """
         feed = self.__feed_forward(X)
         if feed.shape[1] == 1:
             return feed
@@ -254,6 +263,13 @@ class Network:
 
     @staticmethod
     def load(path:str):
+        """
+        Load network descriptor from the disk
+
+        :param path: path at which the descriptor is saved
+        :type path: str
+        :rtype: Network
+        """
         with open(path, 'rb') as handle:
             data = pickle.load(handle)
         layers = LayerFactory(data["layers"])

@@ -8,6 +8,6 @@ lookup = {
 }
 
 
-def LossFunctionFactory(data:int):
+def LossFunctionFactory(data):
     loss_id = data.pop("ID")
     return lookup[loss_id](sum=data["sum"], axis=data["axis"])

@@ -9,7 +9,7 @@ from nn_recipe.utils.exceptions import ShapeError
 from enum import Enum, auto
 
 
-class Layer(Function):  # TODO add default value to activation type
+class Layer(Function):
     """
     This Class represents a Layer in our Neural Network, the layer have _out_dim neurons and was connected to another
     layer with in_dim neurons
@@ -17,12 +17,12 @@ class Layer(Function):  # TODO add default value to activation type
     Layer is responsible for:
         - Calculating the forward path
         - Calculating gradients that will be used to calculate backward path
+
     """
     ID = -1
 
     def __init__(self, in_dim, out_dim, **kwargs):
         """ Initializes variables that will be used later by the Layer object"""
-        # TODO add type checking for constructor input
         super(Layer, self).__init__()  # calling base class (Function) constructor
         self._weights: np.ndarray = None  # weights matrix
         self._bias: np.ndarray = None  # bias matrix
@@ -73,7 +73,6 @@ class Layer(Function):  # TODO add default value to activation type
     @weights.setter
     def weights(self, value):
         """ Layer's weights setter"""
-        # TODO add type checking for weights setter
         assert self._weights.shape == value.shape
         self._weights = value
 
@@ -85,23 +84,31 @@ class Layer(Function):  # TODO add default value to activation type
     @bias.setter
     def bias(self, value):
         """ Layer's weights setter"""
-        # TODO add type checking for bias setter
         assert self._bias.shape == value.shape
         self._bias = value
 
     @property
     def size(self):
+        """ Gets the size of the current layer (number of neurons)"""
         return self._out_dim
 
     @property
     def input_size(self):
+        """ Gets input size expected by the layer (number of neurons in the previous layer)"""
         return self._in_dim
 
     @abstractmethod
     def _save(self):
+        """ Abstract methode used to get the data that will be saved in the save phase"""
         pass
 
     def save(self):
+        """ Get a dictionary represents the Layer contents
+
+        Dictionary Construction:
+            - ID: unique identifier for the layer class
+            - Other data specific for each layer specialization
+        """
         out = self._save()
         out["ID"] = self.ID
         return out
@@ -109,4 +116,5 @@ class Layer(Function):  # TODO add default value to activation type
     @staticmethod
     @abstractmethod
     def load(data):
+        """ Abstract class used to build a Layer from the Dict descriptor"""
         pass

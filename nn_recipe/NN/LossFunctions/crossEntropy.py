@@ -2,9 +2,6 @@ from .__loss_function import LossFunction
 import numpy as np
 import sys
 
-#TODO replace function call with math formula
-#TODO add normalization type
-# regularization
 
 EPSILON = sys.float_info.epsilon
 

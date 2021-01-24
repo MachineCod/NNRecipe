@@ -35,7 +35,6 @@ class LossFunction(Function):
     def _compute_local_grad(self, Y, Y_hat):
         pass
 
-
     def save(self):
         return {
             "ID": self.ID,

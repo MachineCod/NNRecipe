@@ -1,4 +1,5 @@
 from.__optimizer import Optimizer
+from ..NN.Layers.conv import Conv2D
 import numpy as np
 
 
@@ -25,9 +26,12 @@ class GD(Optimizer):
         return delta_w,delta_b
 
     def optimize(self, layer, delta: np.ndarray, *args, **kwargs) -> None:
-        delta_w, delta_b = self.update_delta(layer, delta)
-        layer.weights = layer.weights - self._learning_rate * delta_w
-        layer.bias = layer.bias - self._learning_rate * delta_b
+        if isinstance(layer, Conv2D):
+            layer.weights = layer.weights - self._learning_rate * delta
+        else: 
+            delta_w, delta_b = self.update_delta(layer, delta)
+            layer.weights = layer.weights - self._learning_rate * delta_w
+            layer.bias = layer.bias - self._learning_rate * delta_b
 
     def flush(self, layer):
         pass

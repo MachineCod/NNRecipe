@@ -55,18 +55,19 @@ class Conv2D():
             self._bias = np.zeros((self.filters, 1))
             try:
                 self._weights = kwargs["filters_values"].reshape((filters, *kernelSize, inChannels))
-                print("\nweights", self._weights.shape)
+                # print("\nweights", self._weights.shape)
             except ValueError:
                 self._weights = np.empty((filters, *kernelSize, inChannels))
-                print("\nweights2", self._weights.shape)
+                # print("\nweights2", self._weights.shape)
                 for i in range(filters):
                     self._weights[i] = kwargs['filters_values']
 
 
     def __call__(self, x, *args, **kwargs):
         """Perform the function forward pass f(x), calculate the function gradient with respect to x"""
+        self._inputShape = x.shape
         self._cache = self._forward(x, *args, **kwargs)                     # forward pass
-        # self._grad = self._calc_local_grad(x, dY,*args, **kwargs)         # Gradient Calculation, caching
+        self._grad = None         # Gradient Calculation, caching
         return self._cache
 
     def _init_params(self):
@@ -86,7 +87,7 @@ class Conv2D():
         x_copy = np.copy(x).reshape((batch_size, height, width, inChannels))
         # self._inputShape = x_copy.shape
 
-        if padding == "VALID":      
+        if padding == "VALID":
             outputHeight = (height - kernelSize[0]) // strides[0] + 1
             outputWidth = (width - kernelSize[1]) // strides[1] + 1
             outputSize = (batch_size, outputHeight, outputWidth, outChannels)
@@ -106,12 +107,13 @@ class Conv2D():
             paddingHeight = ((height - 1) * strides[0] - h + kernelSize[0]) // 2
             paddingWidth = ((width - 1) * strides[1] - w + kernelSize[1]) // 2
             npad = ((0, 0), (paddingHeight, paddingHeight), (paddingWidth, paddingWidth), (0, 0))
-            newInput = np.pad(x_copy, pad_width=npad, mode='constant', constant_values=0) 
+            newInput = np.pad(x_copy, pad_width=npad, mode='constant', constant_values=0)
         output = np.zeros(outputSize)
         return newInput, output, x_copy.shape
 
     def _forward(self, x):
-        self._newInput, output, self._inputShape = self.generate_initial_input_and_output(x, self.filters, self.kernelSize, self.strides, self.padding)
+        
+        self._newInput, output, self._inputShape = self.generate_initial_input_and_output(x, self.filters, self.kernelSize, self.strides, self.padding) 
         batch_size, outputHeight, outputWidth, outChannels = output.shape
         for b in range(batch_size):
             for ch in range(outChannels):
@@ -125,10 +127,10 @@ class Conv2D():
                         widthEnd = widthStart + self.kernelSize[1]
                         if widthEnd > self._newInput.shape[2]:
                             break
-                        window = self._newInput[b, heightStart:heightEnd, widthStart:widthEnd, ch]
+                        window = self._newInput[b, heightStart:heightEnd, widthStart:widthEnd, :]
                         # print(b, ch, i, j, self._weights[ch].shape, window.shape, self._bias[ch].shape)
-                        output[b, i, j, ch] = np.sum(self._weights[b, :, :, ch]*window) #+ self._bias[ch]
-                
+                        output[b, i, j, ch] = np.sum(self._weights[ch]*window) #+ self._bias[ch]
+        
         return np.maximum(output, 0)
         
     def _convolute(self, a, b, convType="NORMAL"):
@@ -159,23 +161,26 @@ class Conv2D():
                         widthEnd = widthStart + kernelSize[1]  # 30 + 5
                         if widthEnd > paddedInput.shape[2]:
                             break
-                        window = paddedInput[n, heightStart:heightEnd, widthStart:widthEnd, :]
+                        window = paddedInput[n, heightStart:heightEnd, widthStart:widthEnd, ch]
                         # print(b, ch, i, j, self._weights[ch].shape, window.shape, self._bias[ch].shape)
-                        output[n, i, j, ch] = np.sum(b[ch]*window)
+                        output[n, i, j, ch] = np.sum(b[n, :, :, ch]*window)
         return output
-
-    def _calc_local_grad(self, dY):
+    
+    def calc_local_grad(self, dY):
         """
         Backpropagation in convolutional layer
             1. dW: ∂L/∂W = convolution between (padded input x, ∂L/∂Y)
             2. dX: ∂L/∂X = full convolution between (filter rotatated 180°, ∂L/∂Y)
             where Y is the output of the convolution layer in the forward pass
         """
-        return {
+        print("conv", dY.shape, self._newInput.shape)
+        self._grad = {
             'dW': self._convolute(self._newInput, dY, "NORMAL"),
-            'dX': np.flip(np.flip(self._convolute(np.flip(np.flip(self._weights, 2), 1),  dY, "FULL"), 2), 1)
+            'dY': np.flip(np.flip(self._convolute(np.flip(np.flip(self._weights, 2), 1),  dY, "FULL"), 2), 1)
             # self._convolute(x, self._weights)
         }
+        print(self._grad['dW'].shape, self._grad['dY'].shape)
+        return self._grad
     
     @property
     def weights(self):

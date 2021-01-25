@@ -2,7 +2,7 @@ import os
 import tarfile
 import urllib
 
-from dataLoader import DataLoader
+from .dataLoader import DataLoader
 import gzip
 import numpy as np
 

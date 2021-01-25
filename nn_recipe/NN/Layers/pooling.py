@@ -10,7 +10,7 @@ class PaddingType(Enum):
     FULL = "FULL"
 
 
-class MaxPool2D:
+class MaxPool2D():
     def __init__(self, kernelSize, strides, padding=PaddingType.SAME, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.kernelSize = kernelSize if isinstance(kernelSize, tuple) else (kernelSize, kernelSize)
@@ -81,16 +81,6 @@ class MaxPool2D:
                         pass
                 j_accumulator += self.strides[1]
             i_accumulator += self.strides[0]
-        # ------------------------------------------------------------------
-        # for h in range(0, H//KH): 
-        #     for w in range(0, W//KW):
-        #         h_offset, w_offset = h*KH, w*KW
-        #         window = x[h_offset:h_offset+KH, w_offset:w_offset+KW, :]
-        #         output[h, w, :] = np.max(window, axis=(0, 1))
-        #         for kh in range(KH):
-        #             for kw in range(KW):
-        #                 self._local_grad[h_offset+kh, w_offset+kw, :] = (x[h_offset+kh, w_offset+kw, :] >= output[h, w, :])
-        # print(self._local_grad)
         return output
 
     def calc_local_grad(self, dY):
@@ -133,8 +123,10 @@ class MaxPool2D:
         0 3 0 0
         0 0 0 4
         """
-        dY = np.repeat(np.repeat(dY, repeats=self.kernelSize[0], axis=0),
-                repeats=self.kernelSize[1], axis=1)
+        print("pooling", dY.shape)
+        dY = np.repeat(np.repeat(dY, repeats=self.kernelSize[0], axis=1),
+                repeats=self.kernelSize[1], axis=2)
+        print("pooling2", self._local_grad.shape, dY.shape)
         return {
             'dY': self._local_grad * dY
         }

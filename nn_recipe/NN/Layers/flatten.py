@@ -6,7 +6,10 @@ class Flatten:
 
     def _forward(self, X):
         self._cache = X.shape
-        return X.reshape(X.shape[0], 1, -1)
+        return X.reshape(X.shape[0], -1)
     
-    def _calc_local_grad(self, dL):
-        return dL.reshape(self._cache)
+    def calc_local_grad(self, dL):
+        print("Flatten", self._cache, dL.shape)
+        return {
+            'dY': dL.reshape(self._cache)
+            }

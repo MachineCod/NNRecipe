@@ -9,6 +9,9 @@ NNRecipe is divided into 3 main modules:
   - **Visual**: Visualization module to implement some visulatizations for the Neural Network training.
 
 ![Class Diagram](design.png?raw=true "Title")
+
+## How to install
+pip install -i https://test.pypi.org/simple/ nn-recipe
   
 ## How to use
 1. Create An MNIST Model from a dense layer then save the model to the Desktop

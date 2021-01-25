@@ -1,11 +1,11 @@
 import gzip
 import os
 
-from .dataLoader import DataLoader
+from .__dataLoader import DataLoader
 import gzip
 import numpy as np
 
-from dataLoader import DataLoader
+from __dataLoader import DataLoader
 
 
 class MNISTDataLoader(DataLoader):

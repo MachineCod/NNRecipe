@@ -1,7 +1,7 @@
 import pickle
 import tarfile
 import numpy as np
-from __dataLoader import *
+from .__dataLoader import *
 
 
 class CifarDataLoader(DataLoader):

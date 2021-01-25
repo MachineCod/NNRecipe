@@ -5,7 +5,7 @@ from .__dataLoader import DataLoader
 import gzip
 import numpy as np
 
-
+from __dataLoader import DataLoader
 
 
 class MNISTDataLoader(DataLoader):

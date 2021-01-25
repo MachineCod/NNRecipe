@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='nn_recipe',
-    version='0.1',
+    version='0.2',
     description='Deep learning framework made for educational purposes',
     url='http://github.com/mgtm98/NNRecipe',
     author='Mohamed Gamal - Mohamed Adel - Ahmed Kaled - Mahmoud Hassan - Mohamed Abduallah - Mariem Abdelrahman - Yasmin Alaa',
@@ -11,7 +11,7 @@ setup(
     packages=find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License ::  GNU GPLv3 License",
+        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
     install_requires=[

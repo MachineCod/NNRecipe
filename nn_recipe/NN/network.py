@@ -258,6 +258,7 @@ class Network:
         data = {"loss": self.__loss.save(), "layers": [], "batch_size": self.__batch_size, "opt": self.__opt.save()}
         for layer in self.__layers:
             data["layers"].append(layer.save())
+        # print(data)
         with open(path, 'wb') as handle:
             pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
@@ -272,6 +273,7 @@ class Network:
         """
         with open(path, 'rb') as handle:
             data = pickle.load(handle)
+        # print(data)
         layers = LayerFactory(data["layers"])
         loss_func = LossFunctionFactory(data["loss"])
         batch_size = data["batch_size"]

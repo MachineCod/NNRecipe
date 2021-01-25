@@ -18,7 +18,7 @@ net = Network(
 )
 
 # Loading Data fro mnist Data set
-mnist = MNISTDataLoader(rootPath="C:\\Users\\mgtmP\\Desktop\\NNRecipe\\mnist", download=True)
+mnist = MNISTDataLoader(rootPath="C:\\Users\\mgtmP\\Desktop\\NNRecipe\\mnist", download=False)
 mnist.load()
 X = mnist.get_train_data().reshape((-1, 28 * 28))
 Y = mnist.get_train_labels().reshape((-1, 1))
@@ -48,7 +48,7 @@ def verify():
 
 
 # train the model
-net.train(X, y_encoded, notify_func=None, batch_size=100, max_itr=50, verify_func=verify)
+net.train(X, y_encoded, notify_func=None, batch_size=100, max_itr=10, verify_func=verify)
 
 # check for model accuracy using the test dataset
 out = net.evaluate(X_test)

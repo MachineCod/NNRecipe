@@ -1,11 +1,7 @@
-import gzip
 import os
-
-from .__dataLoader import DataLoader
 import gzip
 import numpy as np
-
-from __dataLoader import DataLoader
+from .__dataLoader import DataLoader
 
 
 class MNISTDataLoader(DataLoader):
@@ -101,6 +97,8 @@ class MNISTDataLoader(DataLoader):
         the labels.
         """
         # Load Train Data
+        if not os.path.isdir(self.rootPath):
+            os.mkdir(self.rootPath)
         trainDataFilename = os.path.join(self.rootPath, MNISTDataLoader.TRAIN_IMAGES)
         with open(trainDataFilename, 'rb') as file:
             self.trainData = self.extract_images(file)

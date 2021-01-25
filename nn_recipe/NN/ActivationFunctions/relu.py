@@ -12,6 +12,8 @@ class ReLU(ActivationFunction):
     >>> print(f.local_grad)             # get local_grad of the relu at the input
     """
 
+    ID = 3
+
     def __init__(self):
         super(ReLU, self).__init__()
 

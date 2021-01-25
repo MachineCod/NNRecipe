@@ -12,6 +12,8 @@ class Identity(ActivationFunction):
     >>> print(f.local_grad)             # get local_grad of the sigmoid at the input
     """
 
+    ID = 1
+
     def __init__(self):
         super(Identity, self).__init__()
 

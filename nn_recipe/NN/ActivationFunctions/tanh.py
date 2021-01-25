@@ -12,6 +12,8 @@ class Tanh(ActivationFunction):
     >>> print(f.local_grad)               # get local_grad of the tanh at the input
     """
 
+    ID = 5
+
     def __init__(self):
         super(Tanh, self).__init__()
 

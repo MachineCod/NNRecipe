@@ -12,6 +12,8 @@ class LeakyReLU(ActivationFunction):
     >>> print(f.local_grad)               # get local_grad of the relu at the input
     """
 
+    ID = 2
+
     def __init__(self, learning_rate=0.01):
         super(LeakyReLU, self).__init__()
         self._learning_rate = learning_rate

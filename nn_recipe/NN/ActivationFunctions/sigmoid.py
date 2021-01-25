@@ -11,6 +11,8 @@ class Sigmoid(ActivationFunction):
     >>> print(f.local_grad)             # get local_grad of the sigmoid at the input
     """
 
+    ID = 4
+
     def __init__(self):
         super(Sigmoid, self).__init__()
 

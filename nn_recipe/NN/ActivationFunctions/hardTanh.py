@@ -1,7 +1,5 @@
 from .__activation import ActivationFunction
-
 import numpy as np
-
 
 
 class HardTanh(ActivationFunction):
@@ -16,6 +14,8 @@ class HardTanh(ActivationFunction):
     >>> print(f.local_grad)               # get local_grad of the HardTanh at the input
 
     """
+
+    ID = 0
 
     def __init__(self):
         super(HardTanh, self).__init__()

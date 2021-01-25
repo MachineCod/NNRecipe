@@ -9,6 +9,9 @@ NNRecipe is divided into 3 main modules:
   - **Visual**: Visualization module to implement some visulatizations for the Neural Network training.
 
 ![Class Diagram](design.png?raw=true "Title")
+![Opt Diagram](optimizer_class_diagram.jpg?raw=true "Title")
+![LossFunc Diagram](LossFunction.png?raw=true "Title")
+![Layer Class Diagram](Layer.png?raw=true "Title")
 
 ## How to install
 pip install -i https://test.pypi.org/simple/ nn-recipe

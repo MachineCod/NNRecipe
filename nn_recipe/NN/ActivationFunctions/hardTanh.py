@@ -8,10 +8,13 @@ class HardTanh(ActivationFunction):
     """
     Class represents the hardtanh activation function
 
+    Examples:
+    ---------
     >>> x = np.array([1, 2, 3])           # input vector
     >>> f = HardTanh()                    # creating HardTanh object
     >>> print(f(x))                       # calculating HardTanh of the input
     >>> print(f.local_grad)               # get local_grad of the HardTanh at the input
+
     """
 
     def __init__(self):
@@ -24,7 +27,7 @@ class HardTanh(ActivationFunction):
                         1   x>1
                        -1   x<-1
         }
-        - visit ////////// for more info on HardTanh func
+
         :param x: input that is wanted to calculate the HardTanh at
         :return: HardTanh value at input x
         :rtype: np.ndarray
@@ -41,15 +44,15 @@ class HardTanh(ActivationFunction):
                             0        1 < x < -1
                             1       -1 <= x < 1
         }
-        - visit //////////////////////
+
         to get more info about HardTanh
         :param x: input that is wanted to calculate the HardTanh at
         :return: HardTanh gradient at input x
         :rtype: np.ndarray
         """
         X = np.copy(x)
-        X[x < -1 and x > 1] = 0
-        X[x >= -1 and x < 1] = 1
+        X[-1 > x > 1] = 0
+        X[-1 <= x < 1] = 1
         return X
 
 

@@ -15,12 +15,10 @@ class Tanh(ActivationFunction):
     def __init__(self):
         super(Tanh, self).__init__()
 
-
     def _forward(self, x):
         """
         - Forward pass of the Tanh function
-        - tanh(x)
-        - visit ////////// for more info on tanh func
+
         :param x: input that is wanted to calculate the tanh at
         :return: tanh value at input x
         :rtype: np.ndarray
@@ -32,8 +30,7 @@ class Tanh(ActivationFunction):
         """
         - Backward pass of the tanh function
         - ∇ Tanh = 1-tanh**2
-        - visit //////////////////////
-        to get more info about Tanh
+
         :param x: input that is wanted to calculate the Tanh at
         :return: Tanh gradient at input x
         :rtype: np.ndarray

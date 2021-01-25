@@ -4,7 +4,7 @@ import numpy as np
 
 class Identity(ActivationFunction):
     """
-    Class represents the sigmoid activation function
+    Class represents the Identity activation function
 
     >>> x = np.array([1, 2, 3])         # input vector
     >>> f = Identity()                   # creating sigmoid object
@@ -17,7 +17,7 @@ class Identity(ActivationFunction):
 
     def _forward(self, x):
         """
-        - Forward pass of the sigmoid function
+        - Forward pass of the Identity  function
         - Identity(x) = x
         :param x: input that is wanted to calculate the sigmoid at
         :return: Identity value at input x which is x

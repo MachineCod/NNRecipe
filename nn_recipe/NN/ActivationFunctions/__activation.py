@@ -8,8 +8,12 @@ class ActivationFunction(Function):
     functionality
 
     :cvar ID: unique if for each activation function class
+    :type ID: int
     """
     ID = -1
 
     def save(self):
+        """
+        Returns the activation function ID to be saved in the save phase
+        """
         return self.ID

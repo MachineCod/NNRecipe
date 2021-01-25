@@ -13,7 +13,7 @@ class GD(Optimizer):
             raise Optimizer.LearningRateTypeError(type(learning_rate))
         self._learning_rate = learning_rate
 
-    def update_delta(self, layer, delta: np.ndarray):
+    def update_delta(self, layer, delta: np.ndarray, number_of_examples):
         """
 
         :param layer:
@@ -21,8 +21,8 @@ class GD(Optimizer):
         :param delta:
         :type delta: np.ndarray
         """
-        delta_w = np.dot(delta, layer.local_grad["dW"]) / layer.weights.shape[1]
-        delta_b = np.sum(delta, axis=1).reshape(-1, 1) / delta.shape[1]
+        delta_w = np.dot(delta, layer.local_grad["dW"]) / number_of_examples
+        delta_b = np.sum(delta, axis=1).reshape(-1, 1) / delta.shape[1] / number_of_examples
         return delta_w,delta_b
 
     def optimize(self, layer, delta: np.ndarray, *args, **kwargs) -> None:

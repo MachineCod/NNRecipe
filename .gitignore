@@ -1,5 +1,5 @@
-cifar-10-batches-py/
-mnist/
+cifar-10-batches-py/*
+mnist/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -283,6 +283,6 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 #nn_recipe/DataLoader/cifarDataLoader.py
-#nn_recipe/DataLoader/dataLoader.py
+#nn_recipe/DataLoader/__dataLoader.py
 #nn_recipe/DataLoader/mnistDataLoader.py
-test_file.py
+#test_file.py

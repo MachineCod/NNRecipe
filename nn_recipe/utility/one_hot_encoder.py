@@ -4,12 +4,12 @@ from typing import List
 
 
 class OneHotEncoder:
-    def __init__(self, types:List[str], active_state:int=1, inactive_state:int=0):
+    def __init__(self, types:List, active_state:int=1, inactive_state:int=0):
         self.__types = self.__process_types(types)
         self.__active_state = check_float(active_state, "Active State value must be a float")
         self.__inactive_state = check_float(inactive_state, "Inactive State value must be a float")
 
-    def __process_types(self, types:List[str]):
+    def __process_types(self, types:List):
         if type(types) is not list:
             raise Exception
         return types

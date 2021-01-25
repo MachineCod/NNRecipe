@@ -5,7 +5,7 @@ class Optimizer(ABC):
     ID = -1
 
     @abstractmethod
-    def optimize(self, layer, delta, *args, **kwargs):
+    def optimize(self, layer, delta, number_of_examples, *args, **kwargs):
         pass
 
     class LearningRateValueError(Exception):
